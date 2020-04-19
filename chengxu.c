@@ -59,6 +59,8 @@ uchar t1=0,t2=5,t3=5,t4=5,t5=0;
 
 uchar Time[6];
 
+uchar info[] = "hello world";
+
 sbit busy=P0^7;   //lcd busy bit
 void wr_d_lcd(uchar content);
 void wr_i_lcd(uchar content);
@@ -895,12 +897,46 @@ void key()
         }
 		}
     }
-
-
-
-
-
 }
+
+void InitUART(void)
+{
+    
+	TMOD = 0x21;
+    SCON = 0x50;
+    TH1 = 0xFD;
+    TL1 = TH1;
+    PCON = 0x00;
+    EA = 1;
+    ES = 1;
+    TR1 = 1;
+}
+
+void SendOneByte(unsigned char c)
+{
+    SBUF = c;
+    while(!TI);
+    TI = 0;
+}
+
+void sendData(char *str)
+{
+	int i =0;
+	while(str[i] != '\0')
+		SendOneByte(str[i++]);
+}
+
+
+void UARTInterrupt(void) interrupt 4
+{
+    if(RI)
+    {
+        RI = 0;
+        //add your code here!
+    }
+}
+
+
 
 //************************************
 //Ö÷³ÌÐò
@@ -916,11 +952,15 @@ main()
 
     init_lcd();
     clrram_lcd();
+	InitUART();
+	
 
     while(1)
     {
-	   show();
-        key();
+	  
+       key();
+	   sendData(info);
+	   show(); 
 
     }
 }

@@ -1,4 +1,4 @@
-C51 COMPILER V9.00   CHENGXU                                                               04/19/2020 12:10:07 PAGE 1   
+C51 COMPILER V9.00   CHENGXU                                                               04/19/2020 16:55:49 PAGE 1   
 
 
 C51 COMPILER V9.00, COMPILATION OF MODULE CHENGXU
@@ -62,7 +62,7 @@ line level    source
   53          sbit beep = P1^5;
   54          #define lcddata P2
   55          
-C51 COMPILER V9.00   CHENGXU                                                               04/19/2020 12:10:07 PAGE 2   
+C51 COMPILER V9.00   CHENGXU                                                               04/19/2020 16:55:49 PAGE 2   
 
   56          unsigned char count=0,m=30,n,nn,money=0,du;                     //定义计数变量
   57          
@@ -70,960 +70,1000 @@ line level    source
   59          
   60          uchar Time[6];
   61          
-  62          sbit busy=P0^7;   //lcd busy bit
-  63          void wr_d_lcd(uchar content);
-  64          void wr_i_lcd(uchar content);
-  65          void clrram_lcd (void);
-  66          void init_lcd(void);
-  67          void busy_lcd(void);
-  68          void rev_row_lcd(uchar row);
-  69          void rev_co_lcd(uchar row,uchar col,uchar mode);
-  70          void clr_lcd(void);
-  71          void wr_co_lcd(uchar row,uchar col,uchar lcddata1,uchar lcddtta2);
-  72          void wr_row_lcd(uchar row,char *p);
-  73          //*******************************************************************                                     
+  62          uchar info[] = "hello world";
+  63          
+  64          sbit busy=P0^7;   //lcd busy bit
+  65          void wr_d_lcd(uchar content);
+  66          void wr_i_lcd(uchar content);
+  67          void clrram_lcd (void);
+  68          void init_lcd(void);
+  69          void busy_lcd(void);
+  70          void rev_row_lcd(uchar row);
+  71          void rev_co_lcd(uchar row,uchar col,uchar mode);
+  72          void clr_lcd(void);
+  73          void wr_co_lcd(uchar row,uchar col,uchar lcddata1,uchar lcddtta2);
+  74          void wr_row_lcd(uchar row,char *p);
+  75          //*******************************************************************                                     
              -                           */
-  74          //因为引脚的定义DB0..DB7是从P1.7...P1.0排列的                                                    */
-  75          //所以顺序需要调换一下
-  76          //*******************************************************************
-  77          uchar swapbit(uchar udata)
-  78          {
-  79   1          uchar ii,tmp=0;
-  80   1          for(ii=0; ii<8; ii++)
-  81   1          {
-  82   2              tmp<<=1;
-  83   2              if(udata&0x01)
-  84   2              {
-  85   3                  tmp|=0x01;
-  86   3              }
-  87   2              udata>>=1;
-  88   2          }
-  89   1          return tmp;
-  90   1      }
-  91          //**********************************
-  92          //液晶初始化
+  76          //因为引脚的定义DB0..DB7是从P1.7...P1.0排列的                                                    */
+  77          //所以顺序需要调换一下
+  78          //*******************************************************************
+  79          uchar swapbit(uchar udata)
+  80          {
+  81   1          uchar ii,tmp=0;
+  82   1          for(ii=0; ii<8; ii++)
+  83   1          {
+  84   2              tmp<<=1;
+  85   2              if(udata&0x01)
+  86   2              {
+  87   3                  tmp|=0x01;
+  88   3              }
+  89   2              udata>>=1;
+  90   2          }
+  91   1          return tmp;
+  92   1      }
   93          //**********************************
-  94          void init_lcd(void)
-  95          {
-  96   1          wr_i_lcd(0x06);  /*光标的移动方向*/
-  97   1          wr_i_lcd(0x0c);  /*开显示，关游标*/
-  98   1      }
-  99          //***********************************
- 100          //填充液晶DDRAM全为空格
- 101          //**********************************
- 102          void clrram_lcd (void)
- 103          {
- 104   1          wr_i_lcd(0x30);
- 105   1          wr_i_lcd(0x01);
- 106   1      }
- 107          //***********************************
- 108          //对液晶写数据
- 109          //content为要写入的数据
- 110          //***********************************
- 111          void wr_d_lcd(uchar content)
- 112          {
- 113   1      //      busy_lcd();
- 114   1          rs=1;
- 115   1          rw=0;
- 116   1          lcddata=swapbit(content);
-C51 COMPILER V9.00   CHENGXU                                                               04/19/2020 12:10:07 PAGE 3   
+  94          //液晶初始化
+  95          //**********************************
+  96          void init_lcd(void)
+  97          {
+  98   1          wr_i_lcd(0x06);  /*光标的移动方向*/
+  99   1          wr_i_lcd(0x0c);  /*开显示，关游标*/
+ 100   1      }
+ 101          //***********************************
+ 102          //填充液晶DDRAM全为空格
+ 103          //**********************************
+ 104          void clrram_lcd (void)
+ 105          {
+ 106   1          wr_i_lcd(0x30);
+ 107   1          wr_i_lcd(0x01);
+ 108   1      }
+ 109          //***********************************
+ 110          //对液晶写数据
+ 111          //content为要写入的数据
+ 112          //***********************************
+ 113          void wr_d_lcd(uchar content)
+ 114          {
+ 115   1      //      busy_lcd();
+ 116   1          rs=1;
+C51 COMPILER V9.00   CHENGXU                                                               04/19/2020 16:55:49 PAGE 3   
 
- 117   1          e=1;
- 118   1          ;
- 119   1          e=0;
- 120   1      }
- 121          //********************************
- 122          //对液晶写指令
- 123          //content为要写入的指令代码
- 124          //*****************************
- 125          void wr_i_lcd(uchar content)
- 126          {
- 127   1      //      busy_lcd();
- 128   1          rs=0;
- 129   1          rw=0;
- 130   1          lcddata=swapbit(content);
- 131   1          e=1;
- 132   1          ;
- 133   1          e=0;
- 134   1      }
- 135          //********************************
- 136          //液晶检测忙状态
- 137          //在写入之前必须执行
- 138          //********************************
- 139          void busy_lcd(void)
- 140          {
- 141   1          lcddata=0xff;
- 142   1          rs=0;
- 143   1          rw=1;
- 144   1          e =1;
- 145   1          while(busy==1);
- 146   1          e =0;
- 147   1      }
- 148          //********************************
- 149          //指定要显示字符的坐标
- 150          //*******************************
- 151          void gotoxy(unsigned char y, unsigned char x)
- 152          {
- 153   1          if(y==1)
- 154   1              wr_i_lcd(0x80|x);
- 155   1          if(y==2)
- 156   1              wr_i_lcd(0x90|x);
- 157   1          if(y==3)
- 158   1              wr_i_lcd((0x80|x)+8);
- 159   1          if(y==4)
- 160   1              wr_i_lcd((0x90|x)+8);
- 161   1      }
- 162          //**********************************
- 163          //液晶显示字符串程序
+ 117   1          rw=0;
+ 118   1          lcddata=swapbit(content);
+ 119   1          e=1;
+ 120   1          ;
+ 121   1          e=0;
+ 122   1      }
+ 123          //********************************
+ 124          //对液晶写指令
+ 125          //content为要写入的指令代码
+ 126          //*****************************
+ 127          void wr_i_lcd(uchar content)
+ 128          {
+ 129   1      //      busy_lcd();
+ 130   1          rs=0;
+ 131   1          rw=0;
+ 132   1          lcddata=swapbit(content);
+ 133   1          e=1;
+ 134   1          ;
+ 135   1          e=0;
+ 136   1      }
+ 137          //********************************
+ 138          //液晶检测忙状态
+ 139          //在写入之前必须执行
+ 140          //********************************
+ 141          void busy_lcd(void)
+ 142          {
+ 143   1          lcddata=0xff;
+ 144   1          rs=0;
+ 145   1          rw=1;
+ 146   1          e =1;
+ 147   1          while(busy==1);
+ 148   1          e =0;
+ 149   1      }
+ 150          //********************************
+ 151          //指定要显示字符的坐标
+ 152          //*******************************
+ 153          void gotoxy(unsigned char y, unsigned char x)
+ 154          {
+ 155   1          if(y==1)
+ 156   1              wr_i_lcd(0x80|x);
+ 157   1          if(y==2)
+ 158   1              wr_i_lcd(0x90|x);
+ 159   1          if(y==3)
+ 160   1              wr_i_lcd((0x80|x)+8);
+ 161   1          if(y==4)
+ 162   1              wr_i_lcd((0x90|x)+8);
+ 163   1      }
  164          //**********************************
- 165          void print(uchar *str)
- 166          {
- 167   1          while(*str!='\0')
- 168   1          {
- 169   2              wr_d_lcd(*str);
- 170   2              str++;
- 171   2          }
- 172   1      }
- 173          
- 174          //***************************************
- 175          //液晶显示主程序模块
+ 165          //液晶显示字符串程序
+ 166          //**********************************
+ 167          void print(uchar *str)
+ 168          {
+ 169   1          while(*str!='\0')
+ 170   1          {
+ 171   2              wr_d_lcd(*str);
+ 172   2              str++;
+ 173   2          }
+ 174   1      }
+ 175          
  176          //***************************************
- 177          void show()
- 178          {         
-C51 COMPILER V9.00   CHENGXU                                                               04/19/2020 12:10:07 PAGE 4   
+ 177          //液晶显示主程序模块
+ 178          //***************************************
+C51 COMPILER V9.00   CHENGXU                                                               04/19/2020 16:55:49 PAGE 4   
 
- 179   1          if(nn<10)
- 180   1          {
- 181   2              gotoxy(1,0);
- 182   2              print("按键选择货物：   ");
- 183   2              mdelay(10);
- 184   2                      
- 185   2      
- 186   2      
+ 179          void show()
+ 180          {         
+ 181   1          if(nn<10)
+ 182   1          {
+ 183   2              gotoxy(1,0);
+ 184   2              print("按键选择货物：   ");
+ 185   2              mdelay(10);
+ 186   2                      
  187   2      
- 188   2              gotoxy(2,0);
- 189   2              print("①矿泉水(1元)  ");
- 190   2              mdelay(10); 
- 191   2      
- 192   2                      Time[0]=t1+'0';
- 193   2              Time[1]='\0';
- 194   2              gotoxy(2,7);
- 195   2                      print(Time);
- 196   2                      
- 197   2                     
- 198   2      
- 199   2      
+ 188   2      
+ 189   2      
+ 190   2              gotoxy(2,0);
+ 191   2              print("①矿泉水(1元)  ");
+ 192   2              mdelay(10); 
+ 193   2      
+ 194   2                      Time[0]=t1+'0';
+ 195   2              Time[1]='\0';
+ 196   2              gotoxy(2,7);
+ 197   2                      print(Time);
+ 198   2                      
+ 199   2                     
  200   2      
  201   2      
- 202   2              gotoxy(3,0);
- 203   2              print("②红茶(3元)   ");
- 204   2              mdelay(10);     //扫描延时
- 205   2      
- 206   2                      Time[0]=t2+'0';
- 207   2            
- 208   2              Time[1]='\0';
- 209   2              gotoxy(3,7);
- 210   2                      print(Time);
- 211   2      
- 212   2      
- 213   2              gotoxy(4,0);
- 214   2              print("③绿茶(4元)  ");
- 215   2              mdelay(10);                 //扫描延时
- 216   2      
- 217   2                      Time[0]=t3+'0';
- 218   2              Time[1]='\0';
- 219   2              gotoxy(4,7);
- 220   2                      print(Time);
- 221   2      
- 222   2      
+ 202   2      
+ 203   2      
+ 204   2              gotoxy(3,0);
+ 205   2              print("②红茶(3元)   ");
+ 206   2              mdelay(10);     //扫描延时
+ 207   2      
+ 208   2                      Time[0]=t2+'0';
+ 209   2            
+ 210   2              Time[1]='\0';
+ 211   2              gotoxy(3,7);
+ 212   2                      print(Time);
+ 213   2      
+ 214   2      
+ 215   2              gotoxy(4,0);
+ 216   2              print("③绿茶(4元)  ");
+ 217   2              mdelay(10);                 //扫描延时
+ 218   2      
+ 219   2                      Time[0]=t3+'0';
+ 220   2              Time[1]='\0';
+ 221   2              gotoxy(4,7);
+ 222   2                      print(Time);
  223   2      
- 224   2          }
- 225   1          if(nn==10)
- 226   1              { clrram_lcd ();}
- 227   1          if(nn>=11)
- 228   1          {
- 229   2      
- 230   2              gotoxy(1,0);
- 231   2              print("④啤酒(5元)  ");
- 232   2              mdelay(10);
- 233   2      
- 234   2                      Time[0]=t4+'0';
- 235   2              Time[1]='\0';
- 236   2              gotoxy(1,7);
- 237   2                      print(Time);
- 238   2      
- 239   2              gotoxy(2,0);
- 240   2              print("⑤红牛(6元)  ");
-C51 COMPILER V9.00   CHENGXU                                                               04/19/2020 12:10:07 PAGE 5   
+ 224   2      
+ 225   2      
+ 226   2          }
+ 227   1          if(nn==10)
+ 228   1              { clrram_lcd ();}
+ 229   1          if(nn>=11)
+ 230   1          {
+ 231   2      
+ 232   2              gotoxy(1,0);
+ 233   2              print("④啤酒(5元)  ");
+ 234   2              mdelay(10);
+ 235   2      
+ 236   2                      Time[0]=t4+'0';
+ 237   2              Time[1]='\0';
+ 238   2              gotoxy(1,7);
+ 239   2                      print(Time);
+ 240   2      
+C51 COMPILER V9.00   CHENGXU                                                               04/19/2020 16:55:49 PAGE 5   
 
- 241   2              mdelay(10);                 //扫描延时
- 242   2      
- 243   2                      Time[0]=t5+'0';
- 244   2              Time[1]='\0';
- 245   2              gotoxy(2,7);
- 246   2                      print(Time);
- 247   2      
- 248   2              gotoxy(3,0);
- 249   2              print("选定后投入硬币");
- 250   2              mdelay(10);     //扫描延时
- 251   2          }
- 252   1      
- 253   1      }
- 254          
- 255          //***************************************
- 256          //按键选择货物
+ 241   2              gotoxy(2,0);
+ 242   2              print("⑤红牛(6元)  ");
+ 243   2              mdelay(10);                 //扫描延时
+ 244   2      
+ 245   2                      Time[0]=t5+'0';
+ 246   2              Time[1]='\0';
+ 247   2              gotoxy(2,7);
+ 248   2                      print(Time);
+ 249   2      
+ 250   2              gotoxy(3,0);
+ 251   2              print("选定后投入硬币");
+ 252   2              mdelay(10);     //扫描延时
+ 253   2          }
+ 254   1      
+ 255   1      }
+ 256          
  257          //***************************************
- 258          
- 259          void key()
- 260          {
- 261   1          
- 262   1                if(K11==0)
- 263   1                  {
- 264   2                      while(K11==0);
- 265   2                      mdelay(10);
- 266   2                      t1=t1+1;
- 267   2                  }
- 268   1                              else if(K12==0)
- 269   1                  {
- 270   2                      while(K12==0);
- 271   2                      mdelay(10);
- 272   2                      t2=t2+1;
- 273   2                  }
- 274   1                                      else if(K13==0)
- 275   1                  {
- 276   2                      while(K13==0);
- 277   2                      mdelay(10);
- 278   2                      t3=t3+1;
- 279   2                  }
- 280   1                                      else if(K14==0)
- 281   1                  {
- 282   2                      while(K14==0);
- 283   2                      mdelay(10);
- 284   2                      t4=t4+1;
- 285   2                  }
- 286   1                                      else if(K15==0)
- 287   1                  {
- 288   2                      while(K15==0);
- 289   2                      mdelay(10);
- 290   2                      t5=t5+1;
- 291   2                  }
- 292   1                              
- 293   1                                      
- 294   1              
- 295   1              
- 296   1              if(K4==0)//按键1
- 297   1          {   
- 298   2                  if(t1>0)
- 299   2                      {  t1--;
- 300   3                      m=30;
- 301   3              clrram_lcd ();
- 302   3              while(1)
-C51 COMPILER V9.00   CHENGXU                                                               04/19/2020 12:10:07 PAGE 6   
+ 258          //按键选择货物
+ 259          //***************************************
+ 260          
+ 261          void key()
+ 262          {
+ 263   1          
+ 264   1                if(K11==0)
+ 265   1                  {
+ 266   2                      while(K11==0);
+ 267   2                      mdelay(10);
+ 268   2                      t1=t1+1;
+ 269   2                  }
+ 270   1                              else if(K12==0)
+ 271   1                  {
+ 272   2                      while(K12==0);
+ 273   2                      mdelay(10);
+ 274   2                      t2=t2+1;
+ 275   2                  }
+ 276   1                                      else if(K13==0)
+ 277   1                  {
+ 278   2                      while(K13==0);
+ 279   2                      mdelay(10);
+ 280   2                      t3=t3+1;
+ 281   2                  }
+ 282   1                                      else if(K14==0)
+ 283   1                  {
+ 284   2                      while(K14==0);
+ 285   2                      mdelay(10);
+ 286   2                      t4=t4+1;
+ 287   2                  }
+ 288   1                                      else if(K15==0)
+ 289   1                  {
+ 290   2                      while(K15==0);
+ 291   2                      mdelay(10);
+ 292   2                      t5=t5+1;
+ 293   2                  }
+ 294   1                              
+ 295   1                                      
+ 296   1              
+ 297   1              
+ 298   1              if(K4==0)//按键1
+ 299   1          {   
+ 300   2                  if(t1>0)
+ 301   2                      {  t1--;
+ 302   3                      m=30;
+C51 COMPILER V9.00   CHENGXU                                                               04/19/2020 16:55:49 PAGE 6   
 
- 303   3              {
- 304   4                  if(m==6)beep=0;
- 305   4                  if(m==5)beep=1;
- 306   4                  if(m==0)
- 307   4                  {
- 308   5                      if(0<money)
- 309   5                      {
- 310   6                          clrram_lcd ();
- 311   6                          gotoxy(1,0);
- 312   6                          print("投币不足购买失败");
- 313   6                          mdelay(10);
- 314   6                          gotoxy(2,0);
- 315   6                          print("退钱：    元");
- 316   6                          mdelay(10);
- 317   6                          Time[0]=money/10+'0';
- 318   6                          Time[1]='.';
- 319   6                          Time[2]=money%10+'0';
- 320   6                          Time[3]='\0';
- 321   6                          gotoxy(2,3);
- 322   6                          print(Time);
- 323   6                          mdelay(6000);
- 324   6                          money=0;
- 325   6                      }
- 326   5      
- 327   5                      clrram_lcd ();
- 328   5                      break;
- 329   5                  }
- 330   4      
- 331   4                  gotoxy(1,0);
- 332   4                  print("已选矿泉水");
- 333   4                  mdelay(10);
- 334   4      
- 335   4                  gotoxy(2,0);
- 336   4                  print("货物价格:1元");
- 337   4                  mdelay(10);
- 338   4      
- 339   4                  gotoxy(3,0);
- 340   4                  print("投币金额:     元");
- 341   4                  mdelay(10);
- 342   4      
- 343   4                  gotoxy(4,0);
- 344   4                  print("规定时间：");
- 345   4                  mdelay(10);
- 346   4      
- 347   4      
- 348   4                  if(n==0)
- 349   4                  {
- 350   5                      gotoxy(3,5);
- 351   5                      print(Time);
- 352   5                      mdelay(100);
- 353   5                  }
- 354   4      
- 355   4                  if(n==1)
- 356   4                  {
- 357   5                      gotoxy(4,7);
- 358   5                      print(Time);
- 359   5                      mdelay(10);
- 360   5                  }
- 361   4      
- 362   4                  if(K1==0)
- 363   4                  {
- 364   5                      while(K1==0);
-C51 COMPILER V9.00   CHENGXU                                                               04/19/2020 12:10:07 PAGE 7   
+ 303   3              clrram_lcd ();
+ 304   3              while(1)
+ 305   3              {
+ 306   4                  if(m==6)beep=0;
+ 307   4                  if(m==5)beep=1;
+ 308   4                  if(m==0)
+ 309   4                  {
+ 310   5                      if(0<money)
+ 311   5                      {
+ 312   6                          clrram_lcd ();
+ 313   6                          gotoxy(1,0);
+ 314   6                          print("投币不足购买失败");
+ 315   6                          mdelay(10);
+ 316   6                          gotoxy(2,0);
+ 317   6                          print("退钱：    元");
+ 318   6                          mdelay(10);
+ 319   6                          Time[0]=money/10+'0';
+ 320   6                          Time[1]='.';
+ 321   6                          Time[2]=money%10+'0';
+ 322   6                          Time[3]='\0';
+ 323   6                          gotoxy(2,3);
+ 324   6                          print(Time);
+ 325   6                          mdelay(6000);
+ 326   6                          money=0;
+ 327   6                      }
+ 328   5      
+ 329   5                      clrram_lcd ();
+ 330   5                      break;
+ 331   5                  }
+ 332   4      
+ 333   4                  gotoxy(1,0);
+ 334   4                  print("已选矿泉水");
+ 335   4                  mdelay(10);
+ 336   4      
+ 337   4                  gotoxy(2,0);
+ 338   4                  print("货物价格:1元");
+ 339   4                  mdelay(10);
+ 340   4      
+ 341   4                  gotoxy(3,0);
+ 342   4                  print("投币金额:     元");
+ 343   4                  mdelay(10);
+ 344   4      
+ 345   4                  gotoxy(4,0);
+ 346   4                  print("规定时间：");
+ 347   4                  mdelay(10);
+ 348   4      
+ 349   4      
+ 350   4                  if(n==0)
+ 351   4                  {
+ 352   5                      gotoxy(3,5);
+ 353   5                      print(Time);
+ 354   5                      mdelay(100);
+ 355   5                  }
+ 356   4      
+ 357   4                  if(n==1)
+ 358   4                  {
+ 359   5                      gotoxy(4,7);
+ 360   5                      print(Time);
+ 361   5                      mdelay(10);
+ 362   5                  }
+ 363   4      
+ 364   4                  if(K1==0)
+C51 COMPILER V9.00   CHENGXU                                                               04/19/2020 16:55:49 PAGE 7   
 
- 365   5                      mdelay(10);
- 366   5                      money=money+100;
- 367   5                  }
- 368   4      
- 369   4                  if(K2==0)
- 370   4                  {
- 371   5                      while(K2==0);
- 372   5                      mdelay(10);
- 373   5                      money=money+50;
- 374   5                  }
- 375   4      
- 376   4                  if(K3==0)
- 377   4                  {
- 378   5                      while(K3==0);
- 379   5                      mdelay(10);
- 380   5                      money=money+10;
- 381   5                  }
- 382   4                  if(money>=10)
- 383   4                  {
- 384   5                      clrram_lcd ();
- 385   5                      gotoxy(1,0);
- 386   5                      print("矿泉水购买成功");
- 387   5                      mdelay(10);
- 388   5                      gotoxy(2,0);
- 389   5                      print("找钱：    元");
- 390   5                      mdelay(10);
- 391   5      
- 392   5                      du=money-10;
- 393   5                      Time[0]=du/10+'0';
- 394   5                      Time[1]='.';
- 395   5                      Time[2]=du%10+'0';
- 396   5                      Time[3]='\0';
- 397   5                      gotoxy(2,3);
- 398   5                      print(Time);
- 399   5                                      DJ=0;
- 400   5                      mdelay(6000);
- 401   5                                      DJ=1;
- 402   5                      money=0;
- 403   5                      clrram_lcd ();
- 404   5                      break;
- 405   5      
- 406   5                  }
- 407   4              }
- 408   3                      }
- 409   2          }
- 410   1      
- 411   1      
- 412   1          if(K5==0)//按键2
- 413   1          {   if(t2>0)
- 414   2                      {  t2--;
- 415   3              
- 416   3                      m=30;
- 417   3              clrram_lcd ();
- 418   3              while(1)
- 419   3              {
- 420   4                  if(m==6)beep=0;
- 421   4                  if(m==5)beep=1;
- 422   4                  if(m==0)
- 423   4                  {
- 424   5                      if(0<money<30)
- 425   5                      {
- 426   6                          clrram_lcd ();
-C51 COMPILER V9.00   CHENGXU                                                               04/19/2020 12:10:07 PAGE 8   
+ 365   4                  {
+ 366   5                      while(K1==0);
+ 367   5                      mdelay(10);
+ 368   5                      money=money+100;
+ 369   5                  }
+ 370   4      
+ 371   4                  if(K2==0)
+ 372   4                  {
+ 373   5                      while(K2==0);
+ 374   5                      mdelay(10);
+ 375   5                      money=money+50;
+ 376   5                  }
+ 377   4      
+ 378   4                  if(K3==0)
+ 379   4                  {
+ 380   5                      while(K3==0);
+ 381   5                      mdelay(10);
+ 382   5                      money=money+10;
+ 383   5                  }
+ 384   4                  if(money>=10)
+ 385   4                  {
+ 386   5                      clrram_lcd ();
+ 387   5                      gotoxy(1,0);
+ 388   5                      print("矿泉水购买成功");
+ 389   5                      mdelay(10);
+ 390   5                      gotoxy(2,0);
+ 391   5                      print("找钱：    元");
+ 392   5                      mdelay(10);
+ 393   5      
+ 394   5                      du=money-10;
+ 395   5                      Time[0]=du/10+'0';
+ 396   5                      Time[1]='.';
+ 397   5                      Time[2]=du%10+'0';
+ 398   5                      Time[3]='\0';
+ 399   5                      gotoxy(2,3);
+ 400   5                      print(Time);
+ 401   5                                      DJ=0;
+ 402   5                      mdelay(6000);
+ 403   5                                      DJ=1;
+ 404   5                      money=0;
+ 405   5                      clrram_lcd ();
+ 406   5                      break;
+ 407   5      
+ 408   5                  }
+ 409   4              }
+ 410   3                      }
+ 411   2          }
+ 412   1      
+ 413   1      
+ 414   1          if(K5==0)//按键2
+ 415   1          {   if(t2>0)
+ 416   2                      {  t2--;
+ 417   3              
+ 418   3                      m=30;
+ 419   3              clrram_lcd ();
+ 420   3              while(1)
+ 421   3              {
+ 422   4                  if(m==6)beep=0;
+ 423   4                  if(m==5)beep=1;
+ 424   4                  if(m==0)
+ 425   4                  {
+ 426   5                      if(0<money<30)
+C51 COMPILER V9.00   CHENGXU                                                               04/19/2020 16:55:49 PAGE 8   
 
- 427   6                          gotoxy(1,0);
- 428   6                          print("投币不足购买失败");
- 429   6                          mdelay(10);
- 430   6                          gotoxy(2,0);
- 431   6                          print("退钱：    元");
- 432   6                          mdelay(10);
- 433   6                          Time[0]=money/10+'0';
- 434   6                          Time[1]='.';
- 435   6                          Time[2]=money%10+'0';
- 436   6                          Time[3]='\0';
- 437   6                          gotoxy(2,3);
- 438   6                          print(Time);
- 439   6                          mdelay(6000);
- 440   6                          money=0;
- 441   6                      }
- 442   5      
- 443   5                      clrram_lcd ();
- 444   5                      break;
- 445   5                  }
- 446   4      
- 447   4                  gotoxy(1,0);
- 448   4                  print("已选红茶");
- 449   4                  mdelay(10);
- 450   4      
- 451   4                  gotoxy(2,0);
- 452   4                  print("货物价格:3元");
- 453   4                  mdelay(10);
- 454   4      
- 455   4                  gotoxy(3,0);
- 456   4                  print("投币金额:     元");
- 457   4                  mdelay(10);
- 458   4      
- 459   4                  gotoxy(4,0);
- 460   4                  print("规定时间：");
- 461   4                  mdelay(10);
- 462   4      
- 463   4      
- 464   4                  if(n==0)
- 465   4                  {
- 466   5                      gotoxy(3,5);
- 467   5                      print(Time);
- 468   5                      mdelay(100);
- 469   5                  }
- 470   4      
- 471   4                  if(n==1)
- 472   4                  {
- 473   5                      gotoxy(4,7);
- 474   5                      print(Time);
- 475   5                      mdelay(10);
- 476   5                  }
- 477   4      
- 478   4                  if(K1==0)
- 479   4                  {
- 480   5                      while(K1==0);
- 481   5                      mdelay(10);
- 482   5                      money=money+100;
- 483   5                  }
- 484   4      
- 485   4                  if(K2==0)
- 486   4                  {
- 487   5                      while(K2==0);
- 488   5                      mdelay(10);
-C51 COMPILER V9.00   CHENGXU                                                               04/19/2020 12:10:07 PAGE 9   
+ 427   5                      {
+ 428   6                          clrram_lcd ();
+ 429   6                          gotoxy(1,0);
+ 430   6                          print("投币不足购买失败");
+ 431   6                          mdelay(10);
+ 432   6                          gotoxy(2,0);
+ 433   6                          print("退钱：    元");
+ 434   6                          mdelay(10);
+ 435   6                          Time[0]=money/10+'0';
+ 436   6                          Time[1]='.';
+ 437   6                          Time[2]=money%10+'0';
+ 438   6                          Time[3]='\0';
+ 439   6                          gotoxy(2,3);
+ 440   6                          print(Time);
+ 441   6                          mdelay(6000);
+ 442   6                          money=0;
+ 443   6                      }
+ 444   5      
+ 445   5                      clrram_lcd ();
+ 446   5                      break;
+ 447   5                  }
+ 448   4      
+ 449   4                  gotoxy(1,0);
+ 450   4                  print("已选红茶");
+ 451   4                  mdelay(10);
+ 452   4      
+ 453   4                  gotoxy(2,0);
+ 454   4                  print("货物价格:3元");
+ 455   4                  mdelay(10);
+ 456   4      
+ 457   4                  gotoxy(3,0);
+ 458   4                  print("投币金额:     元");
+ 459   4                  mdelay(10);
+ 460   4      
+ 461   4                  gotoxy(4,0);
+ 462   4                  print("规定时间：");
+ 463   4                  mdelay(10);
+ 464   4      
+ 465   4      
+ 466   4                  if(n==0)
+ 467   4                  {
+ 468   5                      gotoxy(3,5);
+ 469   5                      print(Time);
+ 470   5                      mdelay(100);
+ 471   5                  }
+ 472   4      
+ 473   4                  if(n==1)
+ 474   4                  {
+ 475   5                      gotoxy(4,7);
+ 476   5                      print(Time);
+ 477   5                      mdelay(10);
+ 478   5                  }
+ 479   4      
+ 480   4                  if(K1==0)
+ 481   4                  {
+ 482   5                      while(K1==0);
+ 483   5                      mdelay(10);
+ 484   5                      money=money+100;
+ 485   5                  }
+ 486   4      
+ 487   4                  if(K2==0)
+ 488   4                  {
+C51 COMPILER V9.00   CHENGXU                                                               04/19/2020 16:55:49 PAGE 9   
 
- 489   5                      money=money+50;
- 490   5                  }
- 491   4      
- 492   4                  if(K3==0)
- 493   4                  {
- 494   5                      while(K3==0);
- 495   5                      mdelay(10);
- 496   5                      money=money+10;
- 497   5                  }
- 498   4                  if(money>=30)
- 499   4                  {
- 500   5                      clrram_lcd ();
- 501   5                      gotoxy(1,0);
- 502   5                      print("红茶购买成功");
- 503   5                      mdelay(10);
- 504   5                      gotoxy(2,0);
- 505   5                      print("找钱：    元");
- 506   5                      mdelay(10);
- 507   5      
- 508   5                      du=money-30;
- 509   5                      Time[0]=du/10+'0';
- 510   5                      Time[1]='.';
- 511   5                      Time[2]=du%10+'0';
- 512   5                      Time[3]='\0';
- 513   5                      gotoxy(2,3);
- 514   5                      print(Time);
- 515   5                                      DJ=0;
- 516   5                      mdelay(6000);
- 517   5                                      DJ=1;
- 518   5                    
- 519   5                      money=0;
- 520   5                      clrram_lcd ();
- 521   5                      break;
- 522   5      
- 523   5                  }
- 524   4              }
- 525   3                      }
- 526   2      
- 527   2          }
- 528   1      
- 529   1      
+ 489   5                      while(K2==0);
+ 490   5                      mdelay(10);
+ 491   5                      money=money+50;
+ 492   5                  }
+ 493   4      
+ 494   4                  if(K3==0)
+ 495   4                  {
+ 496   5                      while(K3==0);
+ 497   5                      mdelay(10);
+ 498   5                      money=money+10;
+ 499   5                  }
+ 500   4                  if(money>=30)
+ 501   4                  {
+ 502   5                      clrram_lcd ();
+ 503   5                      gotoxy(1,0);
+ 504   5                      print("红茶购买成功");
+ 505   5                      mdelay(10);
+ 506   5                      gotoxy(2,0);
+ 507   5                      print("找钱：    元");
+ 508   5                      mdelay(10);
+ 509   5      
+ 510   5                      du=money-30;
+ 511   5                      Time[0]=du/10+'0';
+ 512   5                      Time[1]='.';
+ 513   5                      Time[2]=du%10+'0';
+ 514   5                      Time[3]='\0';
+ 515   5                      gotoxy(2,3);
+ 516   5                      print(Time);
+ 517   5                                      DJ=0;
+ 518   5                      mdelay(6000);
+ 519   5                                      DJ=1;
+ 520   5                    
+ 521   5                      money=0;
+ 522   5                      clrram_lcd ();
+ 523   5                      break;
+ 524   5      
+ 525   5                  }
+ 526   4              }
+ 527   3                      }
+ 528   2      
+ 529   2          }
  530   1      
- 531   1          if(K6==0)//按键3
- 532   1          {   if(t3>0)
- 533   2                      {  t3--;
- 534   3              m=30;
- 535   3              clrram_lcd ();
- 536   3                      while(1)
- 537   3              {
- 538   4                              if(m==6)beep=0;
- 539   4                  if(m==5)beep=1;
- 540   4                  if(m==0)
- 541   4                  {
- 542   5                      if(0<money<40)
- 543   5                      {
- 544   6                          clrram_lcd ();
- 545   6                          gotoxy(1,0);
- 546   6                          print("投币不足购买失败");
- 547   6                          mdelay(10);
- 548   6                          gotoxy(2,0);
- 549   6                          print("退钱：    元");
- 550   6                          mdelay(10);
-C51 COMPILER V9.00   CHENGXU                                                               04/19/2020 12:10:07 PAGE 10  
+ 531   1      
+ 532   1      
+ 533   1          if(K6==0)//按键3
+ 534   1          {   if(t3>0)
+ 535   2                      {  t3--;
+ 536   3              m=30;
+ 537   3              clrram_lcd ();
+ 538   3                      while(1)
+ 539   3              {
+ 540   4                              if(m==6)beep=0;
+ 541   4                  if(m==5)beep=1;
+ 542   4                  if(m==0)
+ 543   4                  {
+ 544   5                      if(0<money<40)
+ 545   5                      {
+ 546   6                          clrram_lcd ();
+ 547   6                          gotoxy(1,0);
+ 548   6                          print("投币不足购买失败");
+ 549   6                          mdelay(10);
+ 550   6                          gotoxy(2,0);
+C51 COMPILER V9.00   CHENGXU                                                               04/19/2020 16:55:49 PAGE 10  
 
- 551   6                          Time[0]=money/10+'0';
- 552   6                          Time[1]='.';
- 553   6                          Time[2]=money%10+'0';
- 554   6                          Time[3]='\0';
- 555   6                          gotoxy(2,3);
- 556   6                          print(Time);
- 557   6                          mdelay(6000);
- 558   6                          money=0;
- 559   6                      }
- 560   5      
- 561   5                      clrram_lcd ();
- 562   5                      break;
- 563   5                  }
- 564   4      
- 565   4                  gotoxy(1,0);
- 566   4                  print("已选绿茶");
- 567   4                  mdelay(10);
- 568   4      
- 569   4                  gotoxy(2,0);
- 570   4                  print("货物价格:4元");
- 571   4                  mdelay(10);
- 572   4      
- 573   4                  gotoxy(3,0);
- 574   4                  print("投币金额:     元");
- 575   4                  mdelay(10);
- 576   4      
- 577   4                  gotoxy(4,0);
- 578   4                  print("规定时间：");
- 579   4                  mdelay(10);
- 580   4      
- 581   4      
- 582   4                  if(n==0)
- 583   4                  {
- 584   5                      gotoxy(3,5);
- 585   5                      print(Time);
- 586   5                      mdelay(100);
- 587   5                  }
- 588   4      
- 589   4                  if(n==1)
- 590   4                  {
- 591   5                      gotoxy(4,7);
- 592   5                      print(Time);
- 593   5                      mdelay(10);
- 594   5                  }
- 595   4      
- 596   4                  if(K1==0)
- 597   4                  {
- 598   5                      while(K1==0);
- 599   5                      mdelay(10);
- 600   5                      money=money+100;
- 601   5                  }
- 602   4      
- 603   4                  if(K2==0)
- 604   4                  {
- 605   5                      while(K2==0);
- 606   5                      mdelay(10);
- 607   5                      money=money+50;
- 608   5                  }
- 609   4      
- 610   4                  if(K3==0)
- 611   4                  {
- 612   5                      while(K3==0);
-C51 COMPILER V9.00   CHENGXU                                                               04/19/2020 12:10:07 PAGE 11  
+ 551   6                          print("退钱：    元");
+ 552   6                          mdelay(10);
+ 553   6                          Time[0]=money/10+'0';
+ 554   6                          Time[1]='.';
+ 555   6                          Time[2]=money%10+'0';
+ 556   6                          Time[3]='\0';
+ 557   6                          gotoxy(2,3);
+ 558   6                          print(Time);
+ 559   6                          mdelay(6000);
+ 560   6                          money=0;
+ 561   6                      }
+ 562   5      
+ 563   5                      clrram_lcd ();
+ 564   5                      break;
+ 565   5                  }
+ 566   4      
+ 567   4                  gotoxy(1,0);
+ 568   4                  print("已选绿茶");
+ 569   4                  mdelay(10);
+ 570   4      
+ 571   4                  gotoxy(2,0);
+ 572   4                  print("货物价格:4元");
+ 573   4                  mdelay(10);
+ 574   4      
+ 575   4                  gotoxy(3,0);
+ 576   4                  print("投币金额:     元");
+ 577   4                  mdelay(10);
+ 578   4      
+ 579   4                  gotoxy(4,0);
+ 580   4                  print("规定时间：");
+ 581   4                  mdelay(10);
+ 582   4      
+ 583   4      
+ 584   4                  if(n==0)
+ 585   4                  {
+ 586   5                      gotoxy(3,5);
+ 587   5                      print(Time);
+ 588   5                      mdelay(100);
+ 589   5                  }
+ 590   4      
+ 591   4                  if(n==1)
+ 592   4                  {
+ 593   5                      gotoxy(4,7);
+ 594   5                      print(Time);
+ 595   5                      mdelay(10);
+ 596   5                  }
+ 597   4      
+ 598   4                  if(K1==0)
+ 599   4                  {
+ 600   5                      while(K1==0);
+ 601   5                      mdelay(10);
+ 602   5                      money=money+100;
+ 603   5                  }
+ 604   4      
+ 605   4                  if(K2==0)
+ 606   4                  {
+ 607   5                      while(K2==0);
+ 608   5                      mdelay(10);
+ 609   5                      money=money+50;
+ 610   5                  }
+ 611   4      
+ 612   4                  if(K3==0)
+C51 COMPILER V9.00   CHENGXU                                                               04/19/2020 16:55:49 PAGE 11  
 
- 613   5                      mdelay(10);
- 614   5                      money=money+10;
- 615   5                  }
- 616   4                  if(money>=40)
- 617   4                  {
- 618   5                      clrram_lcd ();
- 619   5                      gotoxy(1,0);
- 620   5                      print("绿茶购买成功");
- 621   5                      mdelay(10);
- 622   5                      gotoxy(2,0);
- 623   5                      print("找钱：    元");
- 624   5                      mdelay(10);
- 625   5      
- 626   5                      du=money-40;
- 627   5                      Time[0]=du/10+'0';
- 628   5                      Time[1]='.';
- 629   5                      Time[2]=du%10+'0';
- 630   5                      Time[3]='\0';
- 631   5                      gotoxy(2,3);
- 632   5                      print(Time);
- 633   5                                       DJ=0;
- 634   5                      mdelay(6000);
- 635   5                                      DJ=1;
- 636   5                     
- 637   5                      money=0;
- 638   5                      clrram_lcd ();
- 639   5                      break;
- 640   5      
- 641   5                  }
- 642   4              }
- 643   3                      }
- 644   2      
- 645   2          }
- 646   1      
- 647   1      
+ 613   4                  {
+ 614   5                      while(K3==0);
+ 615   5                      mdelay(10);
+ 616   5                      money=money+10;
+ 617   5                  }
+ 618   4                  if(money>=40)
+ 619   4                  {
+ 620   5                      clrram_lcd ();
+ 621   5                      gotoxy(1,0);
+ 622   5                      print("绿茶购买成功");
+ 623   5                      mdelay(10);
+ 624   5                      gotoxy(2,0);
+ 625   5                      print("找钱：    元");
+ 626   5                      mdelay(10);
+ 627   5      
+ 628   5                      du=money-40;
+ 629   5                      Time[0]=du/10+'0';
+ 630   5                      Time[1]='.';
+ 631   5                      Time[2]=du%10+'0';
+ 632   5                      Time[3]='\0';
+ 633   5                      gotoxy(2,3);
+ 634   5                      print(Time);
+ 635   5                                       DJ=0;
+ 636   5                      mdelay(6000);
+ 637   5                                      DJ=1;
+ 638   5                     
+ 639   5                      money=0;
+ 640   5                      clrram_lcd ();
+ 641   5                      break;
+ 642   5      
+ 643   5                  }
+ 644   4              }
+ 645   3                      }
+ 646   2      
+ 647   2          }
  648   1      
- 649   1          if(K7==0)//按键4
- 650   1          {   if(t4>0)
- 651   2                      {       t4--;
- 652   3              m=30;
- 653   3              clrram_lcd ();
- 654   3              while(1)
- 655   3              {       
- 656   4              if(m==6)beep=0;
- 657   4              if(m==5)beep=1;
- 658   4                  if(m==0)
- 659   4                  {
- 660   5                      if(0<money<50)
- 661   5                      {
- 662   6                          clrram_lcd ();
- 663   6                          gotoxy(1,0);
- 664   6                          print("投币不足购买失败");
- 665   6                          mdelay(10);
- 666   6                          gotoxy(2,0);
- 667   6                          print("退钱：    元");
- 668   6                          mdelay(10);
- 669   6                          Time[0]=money/10+'0';
- 670   6                          Time[1]='.';
- 671   6                          Time[2]=money%10+'0';
- 672   6                          Time[3]='\0';
- 673   6                          gotoxy(2,3);
- 674   6                          print(Time);
-C51 COMPILER V9.00   CHENGXU                                                               04/19/2020 12:10:07 PAGE 12  
+ 649   1      
+ 650   1      
+ 651   1          if(K7==0)//按键4
+ 652   1          {   if(t4>0)
+ 653   2                      {       t4--;
+ 654   3              m=30;
+ 655   3              clrram_lcd ();
+ 656   3              while(1)
+ 657   3              {       
+ 658   4              if(m==6)beep=0;
+ 659   4              if(m==5)beep=1;
+ 660   4                  if(m==0)
+ 661   4                  {
+ 662   5                      if(0<money<50)
+ 663   5                      {
+ 664   6                          clrram_lcd ();
+ 665   6                          gotoxy(1,0);
+ 666   6                          print("投币不足购买失败");
+ 667   6                          mdelay(10);
+ 668   6                          gotoxy(2,0);
+ 669   6                          print("退钱：    元");
+ 670   6                          mdelay(10);
+ 671   6                          Time[0]=money/10+'0';
+ 672   6                          Time[1]='.';
+ 673   6                          Time[2]=money%10+'0';
+ 674   6                          Time[3]='\0';
+C51 COMPILER V9.00   CHENGXU                                                               04/19/2020 16:55:49 PAGE 12  
 
- 675   6                          mdelay(6000);
- 676   6                          money=0;
- 677   6                      }
- 678   5      
- 679   5                      clrram_lcd ();
- 680   5                      break;
- 681   5                  }
- 682   4      
- 683   4                  gotoxy(1,0);
- 684   4                  print("已选啤酒");
- 685   4                  mdelay(10);
- 686   4      
- 687   4                  gotoxy(2,0);
- 688   4                  print("货物价格:5元");
- 689   4                  mdelay(10);
- 690   4      
- 691   4                  gotoxy(3,0);
- 692   4                  print("投币金额:     元");
- 693   4                  mdelay(10);
- 694   4      
- 695   4                  gotoxy(4,0);
- 696   4                  print("规定时间：");
- 697   4                  mdelay(10);
- 698   4      
- 699   4      
- 700   4                  if(n==0)
- 701   4                  {
- 702   5                      gotoxy(3,5);
- 703   5                      print(Time);
- 704   5                      mdelay(100);
- 705   5                  }
- 706   4      
- 707   4                  if(n==1)
- 708   4                  {
- 709   5                      gotoxy(4,7);
- 710   5                      print(Time);
- 711   5                      mdelay(10);
- 712   5                  }
- 713   4      
- 714   4                  if(K1==0)
- 715   4                  {
- 716   5                      while(K1==0);
- 717   5                      mdelay(10);
- 718   5                      money=money+100;
- 719   5                  }
- 720   4      
- 721   4                  if(K2==0)
- 722   4                  {
- 723   5                      while(K2==0);
- 724   5                      mdelay(10);
- 725   5                      money=money+50;
- 726   5                  }
- 727   4      
- 728   4                  if(K3==0)
- 729   4                  {
- 730   5                      while(K3==0);
- 731   5                      mdelay(10);
- 732   5                      money=money+10;
- 733   5                  }
- 734   4                  if(money>=50)
- 735   4                  {
- 736   5                      clrram_lcd ();
-C51 COMPILER V9.00   CHENGXU                                                               04/19/2020 12:10:07 PAGE 13  
+ 675   6                          gotoxy(2,3);
+ 676   6                          print(Time);
+ 677   6                          mdelay(6000);
+ 678   6                          money=0;
+ 679   6                      }
+ 680   5      
+ 681   5                      clrram_lcd ();
+ 682   5                      break;
+ 683   5                  }
+ 684   4      
+ 685   4                  gotoxy(1,0);
+ 686   4                  print("已选啤酒");
+ 687   4                  mdelay(10);
+ 688   4      
+ 689   4                  gotoxy(2,0);
+ 690   4                  print("货物价格:5元");
+ 691   4                  mdelay(10);
+ 692   4      
+ 693   4                  gotoxy(3,0);
+ 694   4                  print("投币金额:     元");
+ 695   4                  mdelay(10);
+ 696   4      
+ 697   4                  gotoxy(4,0);
+ 698   4                  print("规定时间：");
+ 699   4                  mdelay(10);
+ 700   4      
+ 701   4      
+ 702   4                  if(n==0)
+ 703   4                  {
+ 704   5                      gotoxy(3,5);
+ 705   5                      print(Time);
+ 706   5                      mdelay(100);
+ 707   5                  }
+ 708   4      
+ 709   4                  if(n==1)
+ 710   4                  {
+ 711   5                      gotoxy(4,7);
+ 712   5                      print(Time);
+ 713   5                      mdelay(10);
+ 714   5                  }
+ 715   4      
+ 716   4                  if(K1==0)
+ 717   4                  {
+ 718   5                      while(K1==0);
+ 719   5                      mdelay(10);
+ 720   5                      money=money+100;
+ 721   5                  }
+ 722   4      
+ 723   4                  if(K2==0)
+ 724   4                  {
+ 725   5                      while(K2==0);
+ 726   5                      mdelay(10);
+ 727   5                      money=money+50;
+ 728   5                  }
+ 729   4      
+ 730   4                  if(K3==0)
+ 731   4                  {
+ 732   5                      while(K3==0);
+ 733   5                      mdelay(10);
+ 734   5                      money=money+10;
+ 735   5                  }
+ 736   4                  if(money>=50)
+C51 COMPILER V9.00   CHENGXU                                                               04/19/2020 16:55:49 PAGE 13  
 
- 737   5                      gotoxy(1,0);
- 738   5                      print("啤酒买成功");
- 739   5                      mdelay(10);
- 740   5                      gotoxy(2,0);
- 741   5                      print("找钱：    元");
- 742   5                      mdelay(10);
- 743   5      
- 744   5                      du=money-50;
- 745   5                      Time[0]=du/10+'0';
- 746   5                      Time[1]='.';
- 747   5                      Time[2]=du%10+'0';
- 748   5                      Time[3]='\0';
- 749   5                      gotoxy(2,3);
- 750   5                      print(Time);
- 751   5                                      DJ=0;
- 752   5                      mdelay(6000);
- 753   5                                      DJ=1;
- 754   5                      money=0;
- 755   5                      clrram_lcd ();
- 756   5                      break;
- 757   5      
- 758   5                  }
- 759   4              }
- 760   3                      }
- 761   2          }
- 762   1      
- 763   1          if(K8==0)//按键5
- 764   1          {  if(t5>0)
- 765   2                      {
- 766   3                         t5--;
- 767   3              m=30;
- 768   3              clrram_lcd ();
- 769   3              while(1)
- 770   3              {
- 771   4      
- 772   4                         if(m==6)beep=0;
- 773   4                 if(m==5)beep=1;
- 774   4                  if(m==0)
- 775   4                  {
- 776   5                      if(0<money<60)
- 777   5                      {
- 778   6                          clrram_lcd ();
- 779   6                          gotoxy(1,0);
- 780   6                          print("投币不足购买失败");
- 781   6                          mdelay(10);
- 782   6                          gotoxy(2,0);
- 783   6                          print("退钱：    元");
- 784   6                          mdelay(10);
- 785   6                          Time[0]=money/10+'0';
- 786   6                          Time[1]='.';
- 787   6                          Time[2]=money%10+'0';
- 788   6                          Time[3]='\0';
- 789   6                          gotoxy(2,3);
- 790   6                          print(Time);
- 791   6                                               mdelay(6000);
- 792   6                          money=0;
- 793   6                      }
- 794   5      
- 795   5                      clrram_lcd ();
- 796   5                      break;
- 797   5                  }
- 798   4      
-C51 COMPILER V9.00   CHENGXU                                                               04/19/2020 12:10:07 PAGE 14  
+ 737   4                  {
+ 738   5                      clrram_lcd ();
+ 739   5                      gotoxy(1,0);
+ 740   5                      print("啤酒买成功");
+ 741   5                      mdelay(10);
+ 742   5                      gotoxy(2,0);
+ 743   5                      print("找钱：    元");
+ 744   5                      mdelay(10);
+ 745   5      
+ 746   5                      du=money-50;
+ 747   5                      Time[0]=du/10+'0';
+ 748   5                      Time[1]='.';
+ 749   5                      Time[2]=du%10+'0';
+ 750   5                      Time[3]='\0';
+ 751   5                      gotoxy(2,3);
+ 752   5                      print(Time);
+ 753   5                                      DJ=0;
+ 754   5                      mdelay(6000);
+ 755   5                                      DJ=1;
+ 756   5                      money=0;
+ 757   5                      clrram_lcd ();
+ 758   5                      break;
+ 759   5      
+ 760   5                  }
+ 761   4              }
+ 762   3                      }
+ 763   2          }
+ 764   1      
+ 765   1          if(K8==0)//按键5
+ 766   1          {  if(t5>0)
+ 767   2                      {
+ 768   3                         t5--;
+ 769   3              m=30;
+ 770   3              clrram_lcd ();
+ 771   3              while(1)
+ 772   3              {
+ 773   4      
+ 774   4                         if(m==6)beep=0;
+ 775   4                 if(m==5)beep=1;
+ 776   4                  if(m==0)
+ 777   4                  {
+ 778   5                      if(0<money<60)
+ 779   5                      {
+ 780   6                          clrram_lcd ();
+ 781   6                          gotoxy(1,0);
+ 782   6                          print("投币不足购买失败");
+ 783   6                          mdelay(10);
+ 784   6                          gotoxy(2,0);
+ 785   6                          print("退钱：    元");
+ 786   6                          mdelay(10);
+ 787   6                          Time[0]=money/10+'0';
+ 788   6                          Time[1]='.';
+ 789   6                          Time[2]=money%10+'0';
+ 790   6                          Time[3]='\0';
+ 791   6                          gotoxy(2,3);
+ 792   6                          print(Time);
+ 793   6                                               mdelay(6000);
+ 794   6                          money=0;
+ 795   6                      }
+ 796   5      
+ 797   5                      clrram_lcd ();
+ 798   5                      break;
+C51 COMPILER V9.00   CHENGXU                                                               04/19/2020 16:55:49 PAGE 14  
 
- 799   4                  gotoxy(1,0);
- 800   4                  print("已选红牛");
- 801   4                  mdelay(10);
- 802   4      
- 803   4                  gotoxy(2,0);
- 804   4                  print("货物价格:6元");
- 805   4                  mdelay(10);
- 806   4      
- 807   4                  gotoxy(3,0);
- 808   4                  print("投币金额:     元");
- 809   4                  mdelay(10);
- 810   4      
- 811   4                  gotoxy(4,0);
- 812   4                  print("规定时间：");
- 813   4                  mdelay(10);
- 814   4      
- 815   4      
- 816   4                  if(n==0)
- 817   4                  {
- 818   5                      gotoxy(3,5);
- 819   5                      print(Time);
- 820   5                      mdelay(100);
- 821   5                  }
- 822   4      
- 823   4                  if(n==1)
- 824   4                  {
- 825   5                      gotoxy(4,7);
- 826   5                      print(Time);
- 827   5                      mdelay(10);
- 828   5                  }
- 829   4      
- 830   4                  if(K1==0)
- 831   4                  {
- 832   5                      while(K1==0);
- 833   5                      mdelay(10);
- 834   5                      money=money+100;
- 835   5                  }
- 836   4      
- 837   4                  if(K2==0)
- 838   4                  {
- 839   5                      while(K2==0);
- 840   5                      mdelay(10);
- 841   5                      money=money+50;
- 842   5                  }
- 843   4      
- 844   4                  if(K3==0)
- 845   4                  {
- 846   5                      while(K3==0);
- 847   5                      mdelay(10);
- 848   5                      money=money+10;
- 849   5                  }
- 850   4                  if(K1==0)
- 851   4                  {
- 852   5                      while(K1==0);
- 853   5                      mdelay(10);
- 854   5                      money=money+100;
- 855   5                  }
- 856   4      
- 857   4                  if(K2==0)
- 858   4                  {
- 859   5                      while(K2==0);
- 860   5                      mdelay(10);
-C51 COMPILER V9.00   CHENGXU                                                               04/19/2020 12:10:07 PAGE 15  
+ 799   5                  }
+ 800   4      
+ 801   4                  gotoxy(1,0);
+ 802   4                  print("已选红牛");
+ 803   4                  mdelay(10);
+ 804   4      
+ 805   4                  gotoxy(2,0);
+ 806   4                  print("货物价格:6元");
+ 807   4                  mdelay(10);
+ 808   4      
+ 809   4                  gotoxy(3,0);
+ 810   4                  print("投币金额:     元");
+ 811   4                  mdelay(10);
+ 812   4      
+ 813   4                  gotoxy(4,0);
+ 814   4                  print("规定时间：");
+ 815   4                  mdelay(10);
+ 816   4      
+ 817   4      
+ 818   4                  if(n==0)
+ 819   4                  {
+ 820   5                      gotoxy(3,5);
+ 821   5                      print(Time);
+ 822   5                      mdelay(100);
+ 823   5                  }
+ 824   4      
+ 825   4                  if(n==1)
+ 826   4                  {
+ 827   5                      gotoxy(4,7);
+ 828   5                      print(Time);
+ 829   5                      mdelay(10);
+ 830   5                  }
+ 831   4      
+ 832   4                  if(K1==0)
+ 833   4                  {
+ 834   5                      while(K1==0);
+ 835   5                      mdelay(10);
+ 836   5                      money=money+100;
+ 837   5                  }
+ 838   4      
+ 839   4                  if(K2==0)
+ 840   4                  {
+ 841   5                      while(K2==0);
+ 842   5                      mdelay(10);
+ 843   5                      money=money+50;
+ 844   5                  }
+ 845   4      
+ 846   4                  if(K3==0)
+ 847   4                  {
+ 848   5                      while(K3==0);
+ 849   5                      mdelay(10);
+ 850   5                      money=money+10;
+ 851   5                  }
+ 852   4                  if(K1==0)
+ 853   4                  {
+ 854   5                      while(K1==0);
+ 855   5                      mdelay(10);
+ 856   5                      money=money+100;
+ 857   5                  }
+ 858   4      
+ 859   4                  if(K2==0)
+ 860   4                  {
+C51 COMPILER V9.00   CHENGXU                                                               04/19/2020 16:55:49 PAGE 15  
 
- 861   5                      money=money+50;
- 862   5                  }
- 863   4      
- 864   4                  if(K3==0)
- 865   4                  {
- 866   5                      while(K3==0);
- 867   5                      mdelay(10);
- 868   5                      money=money+10;
- 869   5                  }
- 870   4                  if(money>=60)
- 871   4                  {
- 872   5                      clrram_lcd ();
- 873   5                      gotoxy(1,0);
- 874   5                      print("红牛买成功");
- 875   5                      mdelay(10);
- 876   5                      gotoxy(2,0);
- 877   5                      print("找钱：    元");
- 878   5                      mdelay(10);
- 879   5      
- 880   5                      du=money-60;
- 881   5                      Time[0]=du/10+'0';
- 882   5                      Time[1]='.';
- 883   5                      Time[2]=du%10+'0';
- 884   5                      Time[3]='\0';
- 885   5                      gotoxy(2,3);
- 886   5                      print(Time);
- 887   5                                      DJ=0;
- 888   5                      mdelay(6000);
- 889   5                                      DJ=1;
- 890   5                      money=0;
- 891   5                      clrram_lcd ();
- 892   5                      break;
- 893   5      
- 894   5                  }
- 895   4              }
- 896   3                      }
- 897   2          }
- 898   1      
- 899   1      
- 900   1      
- 901   1      
- 902   1      
- 903   1      }
- 904          
- 905          //************************************
- 906          //主程序
- 907          //*************************************
- 908          main()
- 909          {
- 910   1          TMOD=0x01;                                  //T0 工作在方式1 16位计数器
- 911   1          TH0=(65536-50000)/256;      //预先 设定定时器 初值,50毫秒
- 912   1          TL0=(65536-50000)%256;
- 913   1          EA=1;                                               //开启 总中断
- 914   1          ET0=1;                                              //开启定时器 0 中断
- 915   1          TR0=1;                                              //定时器 0 启动计数
- 916   1      
- 917   1          init_lcd();
- 918   1          clrram_lcd();
- 919   1      
- 920   1          while(1)
- 921   1          {
- 922   2                 show();
-C51 COMPILER V9.00   CHENGXU                                                               04/19/2020 12:10:07 PAGE 16  
+ 861   5                      while(K2==0);
+ 862   5                      mdelay(10);
+ 863   5                      money=money+50;
+ 864   5                  }
+ 865   4      
+ 866   4                  if(K3==0)
+ 867   4                  {
+ 868   5                      while(K3==0);
+ 869   5                      mdelay(10);
+ 870   5                      money=money+10;
+ 871   5                  }
+ 872   4                  if(money>=60)
+ 873   4                  {
+ 874   5                      clrram_lcd ();
+ 875   5                      gotoxy(1,0);
+ 876   5                      print("红牛买成功");
+ 877   5                      mdelay(10);
+ 878   5                      gotoxy(2,0);
+ 879   5                      print("找钱：    元");
+ 880   5                      mdelay(10);
+ 881   5      
+ 882   5                      du=money-60;
+ 883   5                      Time[0]=du/10+'0';
+ 884   5                      Time[1]='.';
+ 885   5                      Time[2]=du%10+'0';
+ 886   5                      Time[3]='\0';
+ 887   5                      gotoxy(2,3);
+ 888   5                      print(Time);
+ 889   5                                      DJ=0;
+ 890   5                      mdelay(6000);
+ 891   5                                      DJ=1;
+ 892   5                      money=0;
+ 893   5                      clrram_lcd ();
+ 894   5                      break;
+ 895   5      
+ 896   5                  }
+ 897   4              }
+ 898   3                      }
+ 899   2          }
+ 900   1      }
+ 901          
+ 902          void InitUART(void)
+ 903          {
+ 904   1          
+ 905   1              TMOD = 0x21;
+ 906   1          SCON = 0x50;
+ 907   1          TH1 = 0xFD;
+ 908   1          TL1 = TH1;
+ 909   1          PCON = 0x00;
+ 910   1          EA = 1;
+ 911   1          ES = 1;
+ 912   1          TR1 = 1;
+ 913   1      }
+ 914          
+ 915          void SendOneByte(unsigned char c)
+ 916          {
+ 917   1          SBUF = c;
+ 918   1          while(!TI);
+ 919   1          TI = 0;
+ 920   1      }
+ 921          
+ 922          void sendData(char *str)
+C51 COMPILER V9.00   CHENGXU                                                               04/19/2020 16:55:49 PAGE 16  
 
- 923   2              key();
- 924   2      
- 925   2          }
- 926   1      }
- 927          
+ 923          {
+ 924   1              int i =0;
+ 925   1              while(str[i] != '\0')
+ 926   1                      SendOneByte(str[i++]);
+ 927   1      }
  928          
- 929          void time0(void)  interrupt 1
- 930          {
- 931   1          TH0=(65536-50000)/256;              //重新设置定时器 初值,产生50MS定时中断
- 932   1          TL0=(65536-50000)%256;
- 933   1          count++;                                    //50ms太短，闪烁频率太快
- 934   1      
- 935   1          if(count==10)
- 936   1          {
- 937   2              if(n==0)
- 938   2              {
- 939   3                  Time[0]=m/10+'0';
- 940   3      
- 941   3                  Time[1]=m%10+'0';
- 942   3                  Time[2]='\0';
- 943   3              }
- 944   2              if(n==1)
- 945   2              {
- 946   3                  Time[0]=money/10+'0';
- 947   3                  Time[1]='.';
- 948   3                  Time[2]=money%10+'0';
- 949   3      
- 950   3              }
- 951   2                      
- 952   2      
- 953   2              Time[3]='\0';
- 954   2              Time[4]='\0';
- 955   2      
- 956   2              count=0;
- 957   2      
- 958   2              if(m==0)m=30;
- 959   2      
- 960   2              n++;
- 961   2              if(n==2)
- 962   2              {
- 963   3                  m--;
- 964   3                  n=0;
- 965   3              }
- 966   2                      
- 967   2                 count=0;
- 968   2              nn++;
- 969   2              if(nn==20)
- 970   2              {
- 971   3                  nn=0;
- 972   3              }
- 973   2          }
+ 929          
+ 930          void UARTInterrupt(void) interrupt 4
+ 931          {
+ 932   1          if(RI)
+ 933   1          {
+ 934   2              RI = 0;
+ 935   2              //add your code here!
+ 936   2          }
+ 937   1      }
+ 938          
+ 939          
+ 940          
+ 941          //************************************
+ 942          //主程序
+ 943          //*************************************
+ 944          main()
+ 945          {
+ 946   1          TMOD=0x01;                                  //T0 工作在方式1 16位计数器
+ 947   1          TH0=(65536-50000)/256;      //预先 设定定时器 初值,50毫秒
+ 948   1          TL0=(65536-50000)%256;
+ 949   1          EA=1;                                               //开启 总中断
+ 950   1          ET0=1;                                              //开启定时器 0 中断
+ 951   1          TR0=1;                                              //定时器 0 启动计数
+ 952   1      
+ 953   1          init_lcd();
+ 954   1          clrram_lcd();
+ 955   1              InitUART();
+ 956   1              
+ 957   1      
+ 958   1          while(1)
+ 959   1          {
+ 960   2                
+ 961   2             key();
+ 962   2                 sendData(info);
+ 963   2                 show(); 
+ 964   2      
+ 965   2          }
+ 966   1      }
+ 967          
+ 968          
+ 969          void time0(void)  interrupt 1
+ 970          {
+ 971   1          TH0=(65536-50000)/256;              //重新设置定时器 初值,产生50MS定时中断
+ 972   1          TL0=(65536-50000)%256;
+ 973   1          count++;                                    //50ms太短，闪烁频率太快
  974   1      
- 975   1      }
+ 975   1          if(count==10)
+ 976   1          {
+ 977   2              if(n==0)
+ 978   2              {
+ 979   3                  Time[0]=m/10+'0';
+ 980   3      
+ 981   3                  Time[1]=m%10+'0';
+ 982   3                  Time[2]='\0';
+ 983   3              }
+ 984   2              if(n==1)
+C51 COMPILER V9.00   CHENGXU                                                               04/19/2020 16:55:49 PAGE 17  
+
+ 985   2              {
+ 986   3                  Time[0]=money/10+'0';
+ 987   3                  Time[1]='.';
+ 988   3                  Time[2]=money%10+'0';
+ 989   3      
+ 990   3              }
+ 991   2                      
+ 992   2      
+ 993   2              Time[3]='\0';
+ 994   2              Time[4]='\0';
+ 995   2      
+ 996   2              count=0;
+ 997   2      
+ 998   2              if(m==0)m=30;
+ 999   2      
+1000   2              n++;
+1001   2              if(n==2)
+1002   2              {
+1003   3                  m--;
+1004   3                  n=0;
+1005   3              }
+1006   2                      
+1007   2                 count=0;
+1008   2              nn++;
+1009   2              if(nn==20)
+1010   2              {
+1011   3                  nn=0;
+1012   3              }
+1013   2          }
+1014   1      
+1015   1      }
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =   2247    ----
+   CODE SIZE        =   2341    ----
    CONSTANT SIZE    =    352    ----
    XDATA SIZE       =   ----    ----
    PDATA SIZE       =   ----    ----
-   DATA SIZE        =     17    ----
+   DATA SIZE        =     29       3
    IDATA SIZE       =   ----    ----
-C51 COMPILER V9.00   CHENGXU                                                               04/19/2020 12:10:07 PAGE 17  
-
    BIT SIZE         =   ----    ----
 END OF MODULE INFORMATION.
 
