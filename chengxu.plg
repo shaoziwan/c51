@@ -9,256 +9,49 @@ Project File Date:  02/04/2016
 <h2>Output:</h2>
 Build target 'Target 1'
 compiling chengxu.c...
-CHENGXU.C(919): error C141: syntax error near ')'
-CHENGXU.C(922): error C141: syntax error near 'data'
-CHENGXU.C(923): error C141: syntax error near 'data'
-Target not created
-Build target 'Target 1'
-compiling chengxu.c...
-CHENGXU.C(919): error C141: syntax error near ')'
-CHENGXU.C(922): error C141: syntax error near 'data'
-CHENGXU.C(923): error C141: syntax error near 'data'
-Target not created
-Build target 'Target 1'
-compiling chengxu.c...
-CHENGXU.C(919): error C141: syntax error near ')'
-CHENGXU.C(922): error C141: syntax error near 'data'
-CHENGXU.C(923): error C141: syntax error near 'data'
-Target not created
-Build target 'Target 1'
-compiling chengxu.c...
-CHENGXU.C(919): error C141: syntax error near ')'
-CHENGXU.C(922): error C141: syntax error near 'data'
-CHENGXU.C(923): error C141: syntax error near 'data'
-Target not created
-Build target 'Target 1'
-compiling chengxu.c...
-CHENGXU.C(919): error C141: syntax error near ')'
-CHENGXU.C(922): error C141: syntax error near 'data'
-CHENGXU.C(923): error C141: syntax error near 'data'
-Target not created
-Build target 'Target 1'
-compiling chengxu.c...
-CHENGXU.C(919): error C141: syntax error near ')'
-CHENGXU.C(922): error C141: syntax error near 'data'
-CHENGXU.C(923): error C141: syntax error near 'data'
-Target not created
-compiling chengxu.c...
-CHENGXU.C(919): error C141: syntax error near ')'
-CHENGXU.C(955): error C141: syntax error near 'unsigned'
-CHENGXU.C(961): error C141: syntax error near 'data'
-chengxu.c - 3 Error(s), 0 Warning(s).
-Build target 'Target 1'
-compiling chengxu.c...
-CHENGXU.C(919): error C141: syntax error near ')'
-CHENGXU.C(955): error C141: syntax error near 'unsigned'
-CHENGXU.C(961): error C141: syntax error near 'data'
-Target not created
-Build target 'Target 1'
-compiling chengxu.c...
-CHENGXU.C(919): error C141: syntax error near ')'
-CHENGXU.C(955): error C141: syntax error near 'char'
-CHENGXU.C(961): error C141: syntax error near 'data'
-Target not created
-Build target 'Target 1'
-compiling chengxu.c...
-CHENGXU.C(955): error C141: syntax error near 'char'
-Target not created
-Build target 'Target 1'
-compiling chengxu.c...
-CHENGXU.C(61): error C141: syntax error near '['
-Target not created
-Build target 'Target 1'
-compiling chengxu.c...
-CHENGXU.C(61): error C141: syntax error near '['
-Target not created
-Build target 'Target 1'
-compiling chengxu.c...
-CHENGXU.C(61): error C141: syntax error near '['
-Target not created
-Build target 'Target 1'
-compiling chengxu.c...
-CHENGXU.C(61): error C141: syntax error near '['
-Target not created
-Build target 'Target 1'
-compiling chengxu.c...
-CHENGXU.C(61): error C141: syntax error near '['
-Target not created
-Build target 'Target 1'
-compiling chengxu.c...
-linking...
-*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
-    SEGMENT: ?PR?BUSY_LCD?CHENGXU
-*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
-    SEGMENT: ?PR?_SENDONEBYTE?CHENGXU
-Program Size: data=126.0 xdata=0 code=2840
-creating hex file from "chengxu"...
-"chengxu" - 0 Error(s), 2 Warning(s).
-Build target 'Target 1'
-compiling chengxu.c...
-CHENGXU.C(963): error C141: syntax error near 'data'
-Target not created
-Build target 'Target 1'
-compiling chengxu.c...
-linking...
-*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
-    SEGMENT: ?PR?BUSY_LCD?CHENGXU
-Program Size: data=41.0 xdata=0 code=2939
-creating hex file from "chengxu"...
-"chengxu" - 0 Error(s), 1 Warning(s).
-Build target 'Target 1'
-assembling STARTUP.A51...
-compiling chengxu.c...
-linking...
-*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
-    SEGMENT: ?PR?BUSY_LCD?CHENGXU
-Program Size: data=41.0 xdata=0 code=2944
-creating hex file from "chengxu"...
-"chengxu" - 0 Error(s), 1 Warning(s).
-Build target 'Target 1'
-compiling chengxu.c...
-linking...
-*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
-    SEGMENT: ?PR?BUSY_LCD?CHENGXU
-Program Size: data=41.0 xdata=0 code=2929
-creating hex file from "chengxu"...
-"chengxu" - 0 Error(s), 1 Warning(s).
-Build target 'Target 1'
-compiling chengxu.c...
-linking...
-*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
-    SEGMENT: ?PR?BUSY_LCD?CHENGXU
-Program Size: data=41.0 xdata=0 code=2929
-creating hex file from "chengxu"...
-"chengxu" - 0 Error(s), 1 Warning(s).
-Build target 'Target 1'
-assembling STARTUP.A51...
-compiling chengxu.c...
-linking...
-*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
-    SEGMENT: ?PR?BUSY_LCD?CHENGXU
-*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
-    SEGMENT: ?PR?SHOW?CHENGXU
-Program Size: data=41.0 xdata=0 code=2926
-creating hex file from "chengxu"...
-"chengxu" - 0 Error(s), 2 Warning(s).
-Build target 'Target 1'
-compiling chengxu.c...
-linking...
-*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
-    SEGMENT: ?PR?BUSY_LCD?CHENGXU
-Program Size: data=41.0 xdata=0 code=2959
-creating hex file from "chengxu"...
-"chengxu" - 0 Error(s), 1 Warning(s).
-Build target 'Target 1'
-compiling chengxu.c...
-CHENGXU.C(906): error C202: 'AUXR': undefined identifier
-CHENGXU.C(907): error C202: 'AUXR': undefined identifier
-Target not created
-Build target 'Target 1'
-compiling chengxu.c...
-linking...
-*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
-    SEGMENT: ?PR?BUSY_LCD?CHENGXU
-Program Size: data=41.0 xdata=0 code=2959
-creating hex file from "chengxu"...
-"chengxu" - 0 Error(s), 1 Warning(s).
-Build target 'Target 1'
-assembling STARTUP.A51...
-compiling chengxu.c...
-linking...
-*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
-    SEGMENT: ?PR?BUSY_LCD?CHENGXU
-Program Size: data=41.0 xdata=0 code=2959
-creating hex file from "chengxu"...
-"chengxu" - 0 Error(s), 1 Warning(s).
-Build target 'Target 1'
-compiling chengxu.c...
 linking...
 *** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
     SEGMENT: ?PR?BUSY_LCD?CHENGXU
 *** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
     SEGMENT: ?PR?_SENDDATA?CHENGXU
-Program Size: data=41.0 xdata=0 code=2945
-creating hex file from "chengxu"...
-"chengxu" - 0 Error(s), 2 Warning(s).
-compiling chengxu.c...
-chengxu.c - 0 Error(s), 0 Warning(s).
-Build target 'Target 1'
-linking...
-*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
-    SEGMENT: ?PR?BUSY_LCD?CHENGXU
-Program Size: data=41.0 xdata=0 code=2954
-creating hex file from "chengxu"...
-"chengxu" - 0 Error(s), 1 Warning(s).
-Build target 'Target 1'
-assembling STARTUP.A51...
-compiling chengxu.c...
-linking...
-*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
-    SEGMENT: ?PR?BUSY_LCD?CHENGXU
-Program Size: data=41.0 xdata=0 code=2954
-creating hex file from "chengxu"...
-"chengxu" - 0 Error(s), 1 Warning(s).
-Build target 'Target 1'
-compiling chengxu.c...
-linking...
-*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
-    SEGMENT: ?PR?BUSY_LCD?CHENGXU
-*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
-    SEGMENT: ?PR?_SENDDATA?CHENGXU
-Program Size: data=41.0 xdata=0 code=2950
+Program Size: data=41.0 xdata=0 code=2942
 creating hex file from "chengxu"...
 "chengxu" - 0 Error(s), 2 Warning(s).
 Build target 'Target 1'
 assembling STARTUP.A51...
 compiling chengxu.c...
-linking...
-*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
-    SEGMENT: ?PR?BUSY_LCD?CHENGXU
-*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
-    SEGMENT: ?PR?KEY?CHENGXU
-*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
-    SEGMENT: ?PR?_SENDDATA?CHENGXU
-Program Size: data=41.0 xdata=0 code=2947
-creating hex file from "chengxu"...
-"chengxu" - 0 Error(s), 3 Warning(s).
+CHENGXU.C(66): error C247: non-address/-constant initializer
+Target not created
 Build target 'Target 1'
+assembling STARTUP.A51...
 compiling chengxu.c...
-linking...
-*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
-    SEGMENT: ?PR?BUSY_LCD?CHENGXU
-*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
-    SEGMENT: ?PR?SHOW?CHENGXU
-*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
-    SEGMENT: ?PR?KEY?CHENGXU
-*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
-    SEGMENT: ?PR?_SENDDATA?CHENGXU
-Program Size: data=41.0 xdata=0 code=2944
-creating hex file from "chengxu"...
-"chengxu" - 0 Error(s), 4 Warning(s).
+CHENGXU.C(1072): error C249: 'DATA': SEGMENT TOO LARGE
+Target not created
 Build target 'Target 1'
 assembling STARTUP.A51...
 compiling chengxu.c...
 linking...
 *** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
     SEGMENT: ?PR?BUSY_LCD?CHENGXU
-*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
-    SEGMENT: ?PR?SHOW?CHENGXU
-*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
-    SEGMENT: ?PR?KEY?CHENGXU
-*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
-    SEGMENT: ?PR?_SENDDATA?CHENGXU
-Program Size: data=41.0 xdata=0 code=2944
+Program Size: data=126.0 xdata=0 code=3188
 creating hex file from "chengxu"...
-"chengxu" - 0 Error(s), 4 Warning(s).
+"chengxu" - 0 Error(s), 1 Warning(s).
 Build target 'Target 1'
 assembling STARTUP.A51...
 compiling chengxu.c...
 linking...
 *** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
     SEGMENT: ?PR?BUSY_LCD?CHENGXU
-Program Size: data=31.0 xdata=0 code=2944
+Program Size: data=128.0 xdata=0 code=3210
+creating hex file from "chengxu"...
+"chengxu" - 0 Error(s), 1 Warning(s).
+Build target 'Target 1'
+assembling STARTUP.A51...
+compiling chengxu.c...
+linking...
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?BUSY_LCD?CHENGXU
+Program Size: data=127.0 xdata=0 code=3201
 creating hex file from "chengxu"...
 "chengxu" - 0 Error(s), 1 Warning(s).
 Build target 'Target 1'
@@ -266,21 +59,54 @@ compiling chengxu.c...
 linking...
 *** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
     SEGMENT: ?PR?BUSY_LCD?CHENGXU
-Program Size: data=31.0 xdata=0 code=2941
-creating hex file from "chengxu"...
-"chengxu" - 0 Error(s), 1 Warning(s).
+*** ERROR L107: ADDRESS SPACE OVERFLOW
+    SPACE:   DATA    
+    SEGMENT: _DATA_GROUP_
+    LENGTH:  0003H
+Program Size: data=131.0 xdata=0 code=3241
+Target not created
 Build target 'Target 1'
+assembling STARTUP.A51...
 compiling chengxu.c...
 linking...
 *** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
     SEGMENT: ?PR?BUSY_LCD?CHENGXU
-Program Size: data=41.0 xdata=0 code=2951
-creating hex file from "chengxu"...
-"chengxu" - 0 Error(s), 1 Warning(s).
+*** ERROR L107: ADDRESS SPACE OVERFLOW
+    SPACE:   DATA    
+    SEGMENT: _DATA_GROUP_
+    LENGTH:  0003H
+Program Size: data=131.0 xdata=0 code=3241
+Target not created
 Build target 'Target 1'
+assembling STARTUP.A51...
+compiling chengxu.c...
 linking...
 *** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
     SEGMENT: ?PR?BUSY_LCD?CHENGXU
-Program Size: data=41.0 xdata=0 code=2951
+Program Size: data=9.0 xdata=122 code=3460
+creating hex file from "chengxu"...
+"chengxu" - 0 Error(s), 1 Warning(s).
+Build target 'Target 1'
+compiling chengxu.c...
+CHENGXU.C(967): error C231: 'sendList': redefinition
+CHENGXU.C(982): error C231: 'sendList': redefinition
+CHENGXU.C(1046): error C211: call not to a function
+Target not created
+Build target 'Target 1'
+assembling STARTUP.A51...
+compiling chengxu.c...
+linking...
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?BUSY_LCD?CHENGXU
+Program Size: data=9.0 xdata=128 code=3797
+creating hex file from "chengxu"...
+"chengxu" - 0 Error(s), 1 Warning(s).
+Build target 'Target 1'
+assembling STARTUP.A51...
+compiling chengxu.c...
+linking...
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?BUSY_LCD?CHENGXU
+Program Size: data=9.0 xdata=128 code=3775
 creating hex file from "chengxu"...
 "chengxu" - 0 Error(s), 1 Warning(s).

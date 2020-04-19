@@ -60,6 +60,15 @@ uchar t1=0,t2=5,t3=5,t4=5,t5=0;
 uchar Time[6];
 
 uchar info[] = "hello world";
+uchar atTest[] = "AT\r\n" ;
+uchar atMUX[] = "AT+CIPMUX=1\r\n" ;
+uchar atServer[] = "AT+CIPSERVER=1,8008\r\n" ;
+uchar sendList[] = "AT+CIPSEND=0,5\r\n";
+uchar sendSTATUS[]= "AT+CIPSEND=0,1\r\n";
+uchar configStep = 0;
+
+uchar recvData[10]={0};
+uchar readFinish = 0;
 
 sbit busy=P0^7;   //lcd busy bit
 void wr_d_lcd(uchar content);
@@ -926,13 +935,80 @@ void sendData(char *str)
 		SendOneByte(str[i++]);
 }
 
+void configEsp8266()
+{
+	static unsigned char count = 0;
+	count++;
+	if(count != 255)
+	{
+		return;
+	}
+	count = 0;
+	switch(configStep){
+	case 0:
+		sendData(atTest);
+		break;
+	case 1:
+		sendData(atMUX);
+		break;
+	case 2:
+		sendData(atServer);
+		break;
+	}
+}
+
+void sendListServer()
+{
+	uchar listStr[6]={0};
+	listStr[0]=t1;
+	listStr[1]=t2;
+	listStr[2]=t3;
+	listStr[3]=t4;
+	listStr[4]=t5;
+	if(readFinish){
+		if(recvData[0]==0x01)
+		{
+			sendData(listStr);
+		}
+	}
+	
+
+}
+
 
 void UARTInterrupt(void) interrupt 4
 {
+	static int i = 0;
+	char recv = 0;
     if(RI)
     {
         RI = 0;
         //add your code here!
+        recv = SBUF;
+        if(recv=='#')
+		{
+			readFinish = 0;
+			i = 0;
+		}
+		else if(recv=='!')
+		{
+			readFinish = i;
+		}
+		else
+		{
+			recvData[i] = recv;
+			i++;
+		}
+		if(i == 50)
+		{
+			i = 0;
+		}
+		if(recv == 'O')
+		{
+			if(configStep < 3)
+				configStep++;
+			show();
+		}
     }
 }
 
@@ -959,8 +1035,9 @@ main()
     {
 	  
        key();
-	   sendData(info);
-	   show(); 
+	   //sendData(info);
+	   configEsp8266();
+	   sendListServer();
 
     }
 }
